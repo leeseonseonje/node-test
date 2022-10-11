@@ -1,5 +1,6 @@
 import {DataSource, EntityManager} from 'typeorm';
-import {Member} from '../../src/orm/Member';
+import {Member} from '../../src/entitiy/Member';
+import {Team} from '../../src/entitiy/Team';
 
 describe('typeORM', () => {
 
@@ -13,7 +14,7 @@ describe('typeORM', () => {
       username: "root",
       password: "root",
       database: "orm_test",
-      entities: [__dirname + '../../src/orm.{ts}'],
+      entities: [Member, Team],
       synchronize: true,
       logging: true,
     });
@@ -21,8 +22,9 @@ describe('typeORM', () => {
   });
 
   it('relational', async () => {
-    const member = new Member('memberA', 25);
-    const savedMember = await em.save(Member, member);
+    const team = new Team('teamA');
+    const member = new Member('memberA', 25, team);
+    const savedMember = await em.save(member);
     console.log(savedMember);
   });
 });
