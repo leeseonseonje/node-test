@@ -14,6 +14,6 @@ describe('DI Test', () => {
     });
 
     it('DI', async () => {
-        sut.develop();
+        expect(sut.develop()).toBe('NestJS');
     });
 });

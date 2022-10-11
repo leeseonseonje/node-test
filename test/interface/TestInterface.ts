@@ -1,11 +1,10 @@
 export interface TestInterface {
-    test();
+  test();
 }
 
 
 export class TestClass implements TestInterface {
-    test() {
-        console.log('dada');
-    }
-
+  test() {
+    console.log('dada');
+  }
 }

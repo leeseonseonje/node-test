@@ -4,13 +4,13 @@ import {BackEndFramework} from "./BackEndFramework";
 @Injectable()
 export class Developer {
 
-    constructor(
-        @Inject('impl')
-        private readonly backEndFramework: BackEndFramework,
-    ) {
-    }
+  constructor(
+    @Inject('impl')
+    private readonly backEndFramework: BackEndFramework,
+  ) {
+  }
 
-    develop() {
-        this.backEndFramework.crud();
-    }
+  develop() {
+    return this.backEndFramework.crud();
+  }
 }
