@@ -1,6 +1,6 @@
-import {Test, TestingModule} from '@nestjs/testing';
-import {Developer} from "./develop/Developer";
-import {NestJS} from "./develop/NestJS";
+import { Test, TestingModule } from '@nestjs/testing';
+import { Developer } from "./develop/Developer";
+import { NestJS } from "./develop/NestJS";
 
 describe('DI Test', () => {
   let sut: Developer;

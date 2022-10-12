@@ -13,12 +13,11 @@ export class Member {
   @Column()
   age: number;
 
-  @ManyToOne(() => Team)
+  @ManyToOne(() => Team, { cascade: true })
   team: Team;
 
-  constructor(name: string, age: number, team: Team) {
+  constructor(name: string, age: number) {
     this.name = name;
     this.age = age;
-    this.team = team;
   }
 }
