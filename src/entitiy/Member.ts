@@ -5,15 +5,15 @@ import {Team} from './Team';
 export class Member {
 
   @PrimaryGeneratedColumn()
-  id: number;
+  readonly id: number;
 
   @Column()
-  name: string;
+  readonly name: string;
 
   @Column()
-  age: number;
+  readonly age: number;
 
-  @ManyToOne(() => Team, { cascade: true })
+  @ManyToOne(() => Team, { cascade: true, onDelete: 'CASCADE' })
   team: Team;
 
   constructor(name: string, age: number) {

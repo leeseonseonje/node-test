@@ -5,9 +5,10 @@ import { Team } from '../../src/entitiy/Team';
 describe('typeORM', () => {
 
   let em: EntityManager;
+  let dataSource: DataSource;
 
   beforeEach(async () => {
-    const dataSource = new DataSource({
+    dataSource = new DataSource({
       type: 'mysql',
       host: 'localhost',
       port: 3306,
@@ -19,9 +20,12 @@ describe('typeORM', () => {
       logging: true,
     });
     await dataSource.initialize();
-   // await dataSource.dropDatabase();
     em = dataSource.manager;
   });
+
+  afterEach(async () => {
+    await dataSource.dropDatabase();
+  })
 
   it('save', async () => {
     const member = new Member('memberA', 25);
@@ -74,4 +78,13 @@ describe('typeORM', () => {
     await em.save(Member, member);
   });
 
+  it('cascade delete', async () => {
+    const member = new Member('memberA', 25);
+    const team = new Team('TeamA');
+    member.team = team;
+
+    await em.save(Member, member);
+
+    await em.delete(Member, member);
+  });
 });
