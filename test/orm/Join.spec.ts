@@ -70,7 +70,7 @@ describe('typeORM', () => {
     }
   });
 
-  it('eager loading', async () => {
+  it('eager loading -> left join', async () => {
     let eagerTeam = new Team('eagerTeam');
     let eagerMember = new Member('eagerMember', 10);
 
@@ -94,5 +94,19 @@ describe('typeORM', () => {
 
     let team = await findMember.lazyTeam;
     console.log(team.name);
+  });
+
+  it('inner join', async () => {
+    const memberRepository = em.getRepository(Member);
+
+    const result = await memberRepository.createQueryBuilder('member')
+      .select(['member.name', 'team.name'])
+      .innerJoin('member.team', 'team')
+      .where('member.id = :id', { id: 1 })
+      .getOne();
+
+    console.log(result);
+    expect(result.name).toBe('memberA');
+    expect(result.team.name).toBe('TeamA');
   });
 });

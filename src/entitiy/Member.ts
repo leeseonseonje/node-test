@@ -16,7 +16,6 @@ export class Member {
   @ManyToOne(() => Team, { cascade: true, onDelete: 'CASCADE' })
   team: Team;
 
-
   @ManyToOne(() => Team, { cascade: true, eager: true })
   eagerTeam: Team;
 
