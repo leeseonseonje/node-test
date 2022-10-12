@@ -16,6 +16,13 @@ export class Member {
   @ManyToOne(() => Team, { cascade: true, onDelete: 'CASCADE' })
   team: Team;
 
+
+  @ManyToOne(() => Team, { cascade: true, eager: true })
+  eagerTeam: Team;
+
+  @ManyToOne(() => Team, { cascade: true })
+  lazyTeam: Promise<Team>;
+
   constructor(name: string, age: number) {
     this.name = name;
     this.age = age;

@@ -1,6 +1,6 @@
-import { DataSource, EntityManager } from 'typeorm';
-import { Member } from '../../src/entitiy/Member';
-import { Team } from '../../src/entitiy/Team';
+import {DataSource, EntityManager} from 'typeorm';
+import {Member} from '../../src/entitiy/Member';
+import {Team} from '../../src/entitiy/Team';
 
 describe('typeORM', () => {
 
@@ -30,14 +30,17 @@ describe('typeORM', () => {
   it('save', async () => {
     const member = new Member('memberA', 25);
     const savedMember = await em.save(Member, member);
+    expect(savedMember.name).toBe('memberA');
   });
 
   it('findOneBy -> select 1번, save -> select 1번, insert 1번(team Insert), update 1번(member)', async () => {
     const team = new Team('teamA');
-    let member = await em.findOneBy(Member, { id: 4 });
+    let savedMember = await em.save(Member, new Member('memberA', 25));
+    let member = await em.findOneBy(Member, { id: savedMember.id });
     await em.save(Team, team);
     member.team = team;
-    await em.save(Member, member);
+    const updateMember = await em.save(Member, member);
+    expect(updateMember.team.name).toBe('teamA');
   });
 
   it('findOneBy -> select 1번, insert -> insert 1번(team) update -> update 1번(member)', async () => {
@@ -57,7 +60,9 @@ describe('typeORM', () => {
     await em.save(Member, member);
     await em.save(Team, team);
 
-    await em.update(Member, member, { team: team, })
+    const updateResult = await em.update(Member, member, { team: team, });
+    console.log(updateResult);
+    expect(updateResult.affected).toBe(1);
   });
 
   it('연관관계 세팅 후 insert(team insert 1번, member insert 1번)', async () => {
@@ -67,21 +72,21 @@ describe('typeORM', () => {
     await em.save(Team, team);
 
     member.team = team;
-    await em.save(Member, member);
+    const savedMember = await em.save(Member, member);
+    expect(savedMember.team.name).toBe('TeamA');
   });
 
   it('cascade: true -> insert 2번 (team 1번, member 1번)', async () => {
     const member = new Member('memberA', 25);
-    const team = new Team('TeamA');
-    member.team = team;
+    member.team = new Team('TeamA');
 
-    await em.save(Member, member);
+    const savedMember = await em.save(Member, member);
+    expect(savedMember.team.name).toBe('TeamA');
   });
 
   it('cascade delete', async () => {
     const member = new Member('memberA', 25);
-    const team = new Team('TeamA');
-    member.team = team;
+    member.team = new Team('TeamA');
 
     await em.save(Member, member);
 
