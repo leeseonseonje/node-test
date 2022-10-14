@@ -29,7 +29,9 @@ describe('typeORM', () => {
 
   it('save', async () => {
     const member = new Member('memberA', 25);
+
     const savedMember = await em.save(Member, member);
+
     expect(savedMember.name).toBe('memberA');
   });
 
@@ -39,7 +41,9 @@ describe('typeORM', () => {
     let member = await em.findOneBy(Member, { id: savedMember.id });
     await em.save(Team, team);
     member.team = team;
+
     const updateMember = await em.save(Member, member);
+
     expect(updateMember.team.name).toBe('teamA');
   });
 
@@ -56,11 +60,11 @@ describe('typeORM', () => {
   it('member, team insert 후 update(연관관계)', async () => {
     const member = new Member('memberA', 25);
     const team = new Team('TeamA');
-
     await em.save(Member, member);
     await em.save(Team, team);
 
     const updateResult = await em.update(Member, member, { team: team, });
+
     console.log(updateResult);
     expect(updateResult.affected).toBe(1);
   });
@@ -68,11 +72,11 @@ describe('typeORM', () => {
   it('연관관계 세팅 후 insert(team insert 1번, member insert 1번)', async () => {
     const member = new Member('memberA', 25);
     const team = new Team('TeamA');
-
     await em.save(Team, team);
-
     member.team = team;
+
     const savedMember = await em.save(Member, member);
+
     expect(savedMember.team.name).toBe('TeamA');
   });
 
@@ -81,6 +85,7 @@ describe('typeORM', () => {
     member.team = new Team('TeamA');
 
     const savedMember = await em.save(Member, member);
+
     expect(savedMember.team.name).toBe('TeamA');
   });
 

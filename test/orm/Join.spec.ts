@@ -73,11 +73,11 @@ describe('typeORM', () => {
   it('eager loading -> left join', async () => {
     let eagerTeam = new Team('eagerTeam');
     let eagerMember = new Member('eagerMember', 10);
-
     eagerMember.eagerTeam = eagerTeam;
     await em.save(Member, eagerMember);
 
     let findMember = await em.findOneBy(Member, {id: eagerMember.id});
+
     console.log(findMember);
     expect(findMember.eagerTeam.name).toBe('eagerTeam');
   });
@@ -85,13 +85,12 @@ describe('typeORM', () => {
   it('lazy loading', async () => {
     let lazyTeam = new Team('lazyTeam');
     let lazyMember = new Member('lazyMember', 10);
-
     lazyMember.lazyTeam = Promise.resolve(lazyTeam);
     await em.save(Member, lazyMember);
 
     let findMember = await em.findOneBy(Member, {id: lazyMember.id});
-    console.log(findMember);
 
+    console.log(findMember);
     let team = await findMember.lazyTeam;
     console.log(team.name);
   });
