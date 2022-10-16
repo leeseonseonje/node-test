@@ -1,6 +1,6 @@
 import {DataSource, EntityManager} from 'typeorm';
-import {Member} from '../../src/entitiy/Member';
-import {Team} from '../../src/entitiy/Team';
+import {Member} from '../../src/entitiy/typeorm/Member';
+import {Team} from '../../src/entitiy/typeorm/Team';
 
 describe('transaction', () => {
 
