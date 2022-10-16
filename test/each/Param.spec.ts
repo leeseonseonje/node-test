@@ -1,8 +1,6 @@
 import {EachTest} from './EachTest';
-import e from 'express';
 
 describe('it.each', () => {
-
 
   it.each([
     [new EachTest('1'), 2],
