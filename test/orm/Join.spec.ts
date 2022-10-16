@@ -108,4 +108,15 @@ describe('typeORM', () => {
     expect(result.name).toBe('memberA');
     expect(result.team.name).toBe('TeamA');
   });
+
+  it('inner join get Many', async () => {
+    const memberRepository = em.getRepository(Member);
+
+    const result = await memberRepository.createQueryBuilder('member')
+      .select(['member.name', 'team.name'])
+      .innerJoin('member.team', 'team')
+      .getMany();
+
+    console.log(result);
+  });
 });

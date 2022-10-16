@@ -1,18 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { MemberRepository } from './MemberRepository';
+import { MemberQueryRepository } from './member-query-repository.service';
 import { Member } from '../../entitiy/Member';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Team } from '../../entitiy/Team';
 
 @Injectable()
 export class MemberService {
 
   constructor(
-    private readonly memberRepository:MemberRepository,
+    @InjectRepository(Member)
+    private readonly memberRepository: Repository<Member>,
+    private readonly memberQueryRepository: MemberQueryRepository,
   ) {
   }
 
   async test() {
-    await this.memberRepository.test();
-    const member = new Member('name', 25);
-    await this.memberRepository.repository.save(member);
+    let member = new Member('name', 25);
+    member.team = new Team('TeamA');
+    await this.memberRepository.save(member);
+    return await this.memberQueryRepository.test();
   }
 }
