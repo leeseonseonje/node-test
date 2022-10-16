@@ -45,9 +45,10 @@ describe('transaction', () => {
 
   it('autoCommit: false', async () => {
     await em.transaction( async manager => {
-      const savedMember = await manager.save(Member, new Member('name', 25));
+      const repository = manager.getRepository(Member);
+      const savedMember = await repository.save(new Member('name', 25));
 
-      const findMember = await manager.findOneBy(Member, {id: savedMember.id});
+      const findMember = await repository.findOneBy({id: savedMember.id});
 
       expect(findMember.name).toBe('name');
       expect(findMember.age).toBe(25);

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MemberService } from '../../../src/nestjs/repository_study/MemberService';
-import { MemberRepository } from '../../../src/nestjs/repository_study/MemberRepository';
+import { MemberQueryRepository } from '../../../src/nestjs/repository_study/member-query-repository.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Member } from '../../../src/entitiy/Member';
 import { AppModule } from '../../../src/app.module';
@@ -12,13 +12,14 @@ describe('repository test', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [TypeOrmModule.forFeature([Member, Team]), AppModule],
-      providers: [MemberService, MemberRepository],
+      providers: [MemberService, MemberQueryRepository],
     }).compile();
 
     sut = app.get<MemberService>(MemberService);
   });
 
   it('repository test', async () => {
-    await sut.test();
+    const members = await sut.test();
+    console.log(members);
   });
 });
