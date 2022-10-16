@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MemberQueryRepository } from './member-query-repository.service';
+import { MemberQueryRepository } from './MemberQueryRepository';
 import { Member } from '../../entitiy/Member';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

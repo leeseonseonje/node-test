@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MemberService } from '../../../src/nestjs/repository_study/MemberService';
-import { MemberQueryRepository } from '../../../src/nestjs/repository_study/member-query-repository.service';
+import { MemberQueryRepository } from '../../../src/nestjs/repository_study/MemberQueryRepository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Member } from '../../../src/entitiy/Member';
 import { AppModule } from '../../../src/app.module';
