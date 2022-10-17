@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository, } from 'typeorm';
-import { Member } from '../../entitiy/Member';
-import { dateTimestampProvider } from 'rxjs/internal/scheduler/dateTimestampProvider';
-import { Team } from '../../entitiy/Team';
+import { DataSource } from 'typeorm';
+import { Member } from '../../entitiy/typeorm/Member';
 
 @Injectable()
 export class MemberQueryRepository {

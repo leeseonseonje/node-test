@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { MemberQueryRepository } from './member-query-repository.service';
-import { Member } from '../../entitiy/Member';
+import { MemberQueryRepository } from './MemberQueryRepository';
+import { Member } from '../../entitiy/typeorm/Member';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Team } from '../../entitiy/Team';
+import { Team } from '../../entitiy/typeorm/Team';
 
 @Injectable()
 export class MemberService {

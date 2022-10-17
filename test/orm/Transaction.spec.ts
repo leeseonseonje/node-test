@@ -1,7 +1,6 @@
 import {DataSource, EntityManager} from 'typeorm';
-import {Member} from '../../src/entitiy/Member';
-import {Team} from '../../src/entitiy/Team';
-import { raw } from 'express';
+import {Member} from '../../src/entitiy/typeorm/Member';
+import {Team} from '../../src/entitiy/typeorm/Team';
 
 describe('transaction', () => {
 
@@ -23,7 +22,6 @@ describe('transaction', () => {
     });
     await dataSource.initialize();
     em = dataSource.manager;
-
 
     dataSource.setOptions({logging: true});
   });
@@ -52,6 +50,6 @@ describe('transaction', () => {
 
       expect(findMember.name).toBe('name');
       expect(findMember.age).toBe(25);
-    })
+    });
   });
 });
