@@ -1,4 +1,5 @@
-import {Entity, PrimaryKey, Property, SerializedPrimaryKey} from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { Company } from './Company';
 
 @Entity()
 export class User {
@@ -8,6 +9,9 @@ export class User {
 
   @Property()
   name: string;
+
+  @ManyToOne({nullable: true})
+  company: Company;
 
   constructor(name: string) {
     this.name = name;
