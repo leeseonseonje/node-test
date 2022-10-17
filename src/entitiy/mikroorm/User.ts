@@ -10,7 +10,7 @@ export class User {
   @Property()
   private _name: string;
 
-  @ManyToOne()
+  @ManyToOne(() => Company)
   private readonly _company: Company;
 
 

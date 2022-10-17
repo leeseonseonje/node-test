@@ -24,7 +24,7 @@ describe('mikro_orm', () => {
   });
 
   afterEach(async () => {
-    await generator.dropSchema();
+   // await generator.dropSchema();
   });
 
   it('entityManager -> 1차 캐시에 남아 있으면 select쿼리X, 없으면 select쿼리O', async () => {
@@ -90,12 +90,15 @@ describe('mikro_orm', () => {
     em.clear();
 
     let query = em.createQueryBuilder(User, 'user');
-    let findUser = await query.select('*')
-      .join('user.company', 'company')
-      //.where({ id: 1 })
+    let findUser = await query.select(['user._id', 'user._name', 'company.name'])
+      .joinAndSelect('user._company', 'company')
+      .where({ id: 1 })
       .getSingleResult();
 
-    console.log(findUser.name);
-    console.log(findUser.company.name);
+    console.log(findUser)
+    expect(findUser.name).toBe('userA');
+    expect(findUser.id).toBe(1);
+    expect(findUser.company.name).toBe('companyA');
+    expect(findUser.company.id).toBe(1);
   });
 });
