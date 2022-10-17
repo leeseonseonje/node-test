@@ -1,4 +1,4 @@
-import {EntityManager, MySqlDriver, SchemaGenerator} from '@mikro-orm/mysql';
+ import {EntityManager, MySqlDriver, SchemaGenerator} from '@mikro-orm/mysql';
 import {MikroORM} from '@mikro-orm/core';
 import {User} from '../../src/entitiy/mikroorm/User';
 import { Company } from '../../src/entitiy/mikroorm/Company';
@@ -30,11 +30,14 @@ describe('mikro_orm', () => {
   it('entityManager -> 1차 캐시에 남아 있으면 select쿼리X, 없으면 select쿼리O', async () => {
     const repository = em.getRepository(User);
     const user = repository.create({name: 'userA'});
+
     await repository.persist(user);
     await repository.flush();
     em.clear();
+
     const findUser = await repository.findOne(1);
     console.log(findUser);
+    expect(findUser.name).toBe('userA');
   });
 
   it('transaction', async () => {
@@ -52,10 +55,47 @@ describe('mikro_orm', () => {
     await em.flush();
     em.clear();
     let findUser = await em.findOne(User, 1);
-    findUser.name = 'userB';
+
+    findUser.changeUsername('userB');
     await em.flush();
 
     let result = await em.findOne(User, 1);
     expect(result.name).toBe('userB');
+  });
+
+  it('loading?', async () => {
+    let company = new Company('companyA');
+    let user = new User('userA', company);
+    await em.transactional(async em => {
+      await em.persist(company);
+      await em.persist(user);
+    })
+
+    em.clear();
+
+    let findUser = await em.findOne(User, 1);
+
+    console.log(findUser.name);
+    console.log(findUser.company.name);
+  });
+
+  it('join', async () => {
+    let company = new Company('companyA');
+    let user = new User('userA', company);
+    await em.transactional(async em => {
+      await em.persist(company);
+      await em.persist(user);
+    })
+
+    em.clear();
+
+    let query = em.createQueryBuilder(User, 'user');
+    let findUser = await query.select('*')
+      .join('user.company', 'company')
+      //.where({ id: 1 })
+      .getSingleResult();
+
+    console.log(findUser.name);
+    console.log(findUser.company.name);
   });
 });
