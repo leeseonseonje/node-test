@@ -6,11 +6,6 @@ describe('typeORM', () => {
 
   let em: EntityManager;
   let dataSource: DataSource;
-  let memberA: Member;
-  let memberB: Member;
-  let memberC: Member;
-  let memberD: Member;
-  let memberE: Member;
 
   beforeEach(async () => {
     dataSource = new DataSource({

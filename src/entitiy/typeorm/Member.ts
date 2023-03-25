@@ -1,14 +1,13 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {Team} from './Team';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Team } from './Team';
 
 @Entity()
 export class Member {
-
   @PrimaryGeneratedColumn()
   readonly id: number;
 
   @Column()
-  readonly name: string;
+  name: string;
 
   @Column()
   readonly age: number;

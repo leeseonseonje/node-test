@@ -1,9 +1,8 @@
-import {DataSource, EntityManager} from 'typeorm';
-import {Member} from '../../src/entitiy/typeorm/Member';
-import {Team} from '../../src/entitiy/typeorm/Team';
+import { DataSource, EntityManager } from 'typeorm';
+import { Member } from '../../src/entitiy/typeorm/Member';
+import { Team } from '../../src/entitiy/typeorm/Team';
 
 describe('typeORM', () => {
-
   let em: EntityManager;
   let dataSource: DataSource;
   let memberA: Member;
@@ -51,13 +50,13 @@ describe('typeORM', () => {
       memberE = await em.save(Member, memberE);
     });
 
-    dataSource.setOptions({logging: true});
+    dataSource.setOptions({ logging: true });
   });
 
   afterEach(async () => {
-    dataSource.setOptions({logging: false});
+    dataSource.setOptions({ logging: false });
     await dataSource.dropDatabase();
-  })
+  });
 
   it('find { relations } -> left join', async () => {
     let members = await em.find(Member, {
@@ -76,7 +75,7 @@ describe('typeORM', () => {
     eagerMember.eagerTeam = eagerTeam;
     await em.save(Member, eagerMember);
 
-    let findMember = await em.findOneBy(Member, {id: eagerMember.id});
+    let findMember = await em.findOneBy(Member, { id: eagerMember.id });
 
     console.log(findMember);
     expect(findMember.eagerTeam.name).toBe('eagerTeam');
@@ -88,7 +87,7 @@ describe('typeORM', () => {
     lazyMember.lazyTeam = Promise.resolve(lazyTeam);
     await em.save(Member, lazyMember);
 
-    let findMember = await em.findOneBy(Member, {id: lazyMember.id});
+    let findMember = await em.findOneBy(Member, { id: lazyMember.id });
 
     console.log(findMember);
     let team = await findMember.lazyTeam;
@@ -98,7 +97,8 @@ describe('typeORM', () => {
   it('inner join', async () => {
     const memberRepository = em.getRepository(Member);
 
-    const result = await memberRepository.createQueryBuilder('member')
+    const result = await memberRepository
+      .createQueryBuilder('member')
       .select(['member.name', 'team.name'])
       .innerJoin('member.team', 'team')
       .where('member.id = :id', { id: 1 })
@@ -112,7 +112,8 @@ describe('typeORM', () => {
   it('inner join get Many', async () => {
     const memberRepository = em.getRepository(Member);
 
-    const result = await memberRepository.createQueryBuilder('member')
+    const result = await memberRepository
+      .createQueryBuilder('member')
       .select(['member.name', 'team.name'])
       .innerJoin('member.team', 'team')
       .getMany();

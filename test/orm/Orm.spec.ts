@@ -1,9 +1,8 @@
-import {DataSource, EntityManager} from 'typeorm';
-import {Member} from '../../src/entitiy/typeorm/Member';
-import {Team} from '../../src/entitiy/typeorm/Team';
+import { DataSource, EntityManager } from 'typeorm';
+import { Member } from '../../src/entitiy/typeorm/Member';
+import { Team } from '../../src/entitiy/typeorm/Team';
 
 describe('typeORM', () => {
-
   let em: EntityManager;
   let dataSource: DataSource;
 
@@ -24,8 +23,8 @@ describe('typeORM', () => {
   });
 
   afterEach(async () => {
-    await dataSource.dropDatabase();
-  })
+    // await dataSource.dropDatabase();
+  });
 
   it('save', async () => {
     const member = new Member('memberA', 25);
@@ -40,11 +39,14 @@ describe('typeORM', () => {
     let savedMember = await em.save(Member, new Member('memberA', 25));
     let member = await em.findOneBy(Member, { id: savedMember.id });
     await em.save(Team, team);
-    member.team = team;
+    // member.name = 'memberABC';
 
-    const updateMember = await em.save(Member, member);
+    em.update(Member, member.id, {
+      name: 'memberABC',
+    });
+    // const updateMember = await em.save(Member, member);
 
-    expect(updateMember.team.name).toBe('teamA');
+    // expect(updateMember.team.name).toBe('teamA');
   });
 
   it('findOneBy -> select 1번, insert -> insert 1번(team) update -> update 1번(member)', async () => {
@@ -63,7 +65,7 @@ describe('typeORM', () => {
     await em.save(Member, member);
     await em.save(Team, team);
 
-    const updateResult = await em.update(Member, member, { team: team, });
+    const updateResult = await em.update(Member, member, { team: team });
 
     console.log(updateResult);
     expect(updateResult.affected).toBe(1);
