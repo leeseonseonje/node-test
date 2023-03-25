@@ -17,4 +17,4 @@ export class MemberQueryRepository {
       .innerJoin('member.team', 'team')
       .getMany();
   }
-}
+}``
